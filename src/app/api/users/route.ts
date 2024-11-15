@@ -1,5 +1,3 @@
-
-
 import { NextResponse } from 'next/server';
 import { supabase } from '~/lib/supabaseClient';
 
@@ -41,7 +39,7 @@ export async function POST(request: Request) {
     const telegramId = id.toString();
 
     // Try to find the user by telegramId
-    let { data: user, error } = await supabase
+    const { data, error } = await supabase
       .from('User') // Adjust table name as per your schema
       .select('*')
       .eq('telegramId', telegramId)
@@ -54,6 +52,9 @@ export async function POST(request: Request) {
         { status: 500 }
       );
     }
+
+    // Initialize user variable to store user data
+    let user = data;
 
     // If the user doesn't exist, create a new one
     if (!user) {
@@ -91,7 +92,6 @@ export async function POST(request: Request) {
     );
   }
 }
-
 
 
 
