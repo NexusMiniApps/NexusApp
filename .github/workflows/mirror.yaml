@@ -23,7 +23,5 @@ jobs:
           MIRROR_REPO_URL: ${{ secrets.MIRROR_REPO_URL }}
         run: |
           git remote add secondary "$MIRROR_REPO_URL"
-
-      - name: Push to Secondary Repo
-        run: |
           git push --mirror -f secondary
+
