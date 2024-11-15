@@ -11,10 +11,19 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v2
+        with:
+          persist-credentials: false  # Prevents GITHUB_TOKEN from being stored
 
-      - name: Push to Secondary Repo
+      - name: Remove Existing Git Credentials
+        run: |
+          git config --global --unset credential.helper || true
+
+      - name: Configure Git Credentials
         env:
           MIRROR_REPO_URL: ${{ secrets.MIRROR_REPO_URL }}
         run: |
           git remote add secondary "$MIRROR_REPO_URL"
+
+      - name: Push to Secondary Repo
+        run: |
           git push --mirror -f secondary
